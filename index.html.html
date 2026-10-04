@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الكوثر والفلاح ٤٨هـ — إحصائيات الحفظ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F1E2;
+    --paper: #FFFDF6;
+    --ink: #202B23;
+    --ink-soft: #55604F;
+    --green: #0E4C43;
+    --green-deep: #082E29;
+    --gold: #AD7F35;
+    --gold-light: #D9B96A;
+    --line: #DDCE9E;
+    --line-soft: #EAE0BE;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Tajawal', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--green);
+    margin-bottom: 36px;
+  }
+  header .titles h1{
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 0 0 4px;
+    color: var(--green-deep);
+  }
+  header .titles p{
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  .meta{
+    text-align: left;
+    font-size: 13px;
+    color: var(--ink-soft);
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .refresh-btn{
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    background: var(--green);
+    color: var(--paper);
+    border: none;
+    padding: 8px 18px;
+    cursor: pointer;
+    letter-spacing: .2px;
+    transition: background .15s ease;
+  }
+  .refresh-btn:hover{ background: var(--green-deep); }
+  .refresh-btn:disabled{ opacity:.6; cursor: default; }
+
+  /* ---------- complex monthly stats ---------- */
+  .complex-stats{
+    background: var(--green-deep);
+    color: var(--paper);
+    padding: 26px 30px 30px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .complex-stats-head{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .complex-stats-head h2{
+    font-family: 'Amiri', serif;
+    font-size: 21px;
+    margin: 0;
+    color: var(--gold-light);
+    border: none;
+    padding: 0;
+  }
+  .month-select{
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13.5px;
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid var(--gold-light);
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .month-select option{ color: var(--ink); }
+  .stat-boxes{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .stat-box{
+    border-inline-start: 3px solid var(--gold-light);
+    padding-inline-start: 14px;
+  }
+  .stat-box .num{
+    font-family: 'Amiri', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--paper);
+    font-variant-numeric: tabular-nums;
+    display:block;
+  }
+  .stat-box .lbl{
+    font-size: 13px;
+    color: #C9D8CF;
+  }
+  .halaqa-rank-title{
+    font-size: 14px;
+    color: #C9D8CF;
+    margin: 0 0 8px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.18);
+  }
+  .halaqa-rank-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 14.5px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .halaqa-rank-row:last-child{ border-bottom: none; }
+  .halaqa-rank-row .r-rank{
+    color: var(--gold-light);
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    width: 26px;
+    display:inline-block;
+  }
+  .halaqa-rank-row .r-name{ flex:1; padding-inline-end: 10px; }
+  .halaqa-rank-row .r-val{ font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  /* ---------- hero (leader) ---------- */
+  .hero{
+    position: relative;
+    padding: 34px 36px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    margin-bottom: 44px;
+  }
+  .hero::before, .hero::after{
+    content:"";
+    position:absolute;
+    right: 14px; left:14px;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--gold) 0 10px, transparent 10px 16px);
+  }
+  .hero::before{ top: 6px; }
+  .hero::after{ bottom: 6px; }
+  .hero-label{
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+  }
+  .hero-body{
+    display:flex;
+    align-items: baseline;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+  .hero-name{
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(30px, 5vw, 46px);
+    color: var(--green-deep);
+  }
+  .hero-halaqa{
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .hero-pct{
+    margin-inline-start: auto;
+    font-family: 'Amiri', serif;
+    font-size: clamp(30px, 5vw, 44px);
+    color: var(--green);
+    font-weight: 700;
+  }
+  .hero-note{
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- section titles ---------- */
+  h2.section-title{
+    font-family: 'Amiri', serif;
+    font-size: 24px;
+    color: var(--green-deep);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin: 0 0 22px;
+  }
+
+  /* ---------- halaqat grid ---------- */
+  .halaqat-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+    margin-bottom: 48px;
+  }
+  .halaqa-panel{
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--green);
+    padding: 20px 20px 6px;
+  }
+  .halaqa-panel h3{
+    font-family: 'Amiri', serif;
+    font-size: 19px;
+    margin: 0 0 4px;
+    color: var(--green-deep);
+  }
+  .halaqa-stats{
+    display:flex;
+    gap:16px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .halaqa-stats b{
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .top-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 14.5px;
+  }
+  .top-row:last-child{ border-bottom: none; }
+  .top-rank{
+    display:inline-flex;
+    width: 22px;
+    color: var(--gold);
+    font-weight: 700;
+    font-family: 'Amiri', serif;
+    font-size: 17px;
+  }
+  .top-name{ flex:1; padding-inline-end: 10px; }
+  .top-pct{
+    font-weight: 700;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+  }
+  .empty-note{
+    padding: 14px 0 18px;
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  /* ---------- overall table ---------- */
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+  }
+  thead th{
+    text-align: right;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--green-deep);
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--green);
+  }
+  thead th.num, tbody td.num{ text-align: center; }
+  tbody td{
+    padding: 10px 14px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  tbody tr:hover{ background: #FBF6E8; }
+  td.rank{ color: var(--gold); font-weight: 700; width: 40px; }
+  td.pct{ font-weight: 700; color: var(--green); font-variant-numeric: tabular-nums; }
+  .table-wrap{ overflow-x:auto; margin-bottom: 50px; }
+
+  footer{
+    text-align:center;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .status-msg{
+    font-size: 13px;
+    color: var(--ink-soft);
+    padding: 6px 0;
+  }
+  .status-msg.error{ color: #A23B2E; }
+
+  @media (max-width: 560px){
+    .hero-pct{ margin-inline-start: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="titles">
+      <h1>الكوثر والفلاح ٤٨هـ</h1>
+      <p>لوحة إحصائيات الحفظ — تُقرأ مباشرة من سجل الرصد الأسبوعي</p>
+    </div>
+    <div class="meta">
+      <span id="lastUpdated">جارٍ التحميل…</span>
+      <button class="refresh-btn" id="refreshBtn" onclick="loadAll()">تحديث البيانات</button>
+    </div>
+  </header>
+
+  <section class="complex-stats">
+    <div class="complex-stats-head">
+      <h2>إحصائيات المجمّع</h2>
+      <select class="month-select" id="weekSelect" onchange="renderWeeklyStats(this.value)"></select>
+    </div>
+    <div class="stat-boxes">
+      <div class="stat-box">
+        <span class="num" id="statMemorized">—</span>
+        <span class="lbl">عدد المحفوظ (بالأوجه)</span>
+      </div>
+      <div class="stat-box">
+        <span class="num" id="statRead">—</span>
+        <span class="lbl">مجموع الربط والمراجعة (بالأوجه)</span>
+      </div>
+      <div class="stat-box">
+        <span class="num" id="statDegree">—</span>
+        <span class="lbl">النسبة الإجمالية</span>
+      </div>
+    </div>
+    <p class="halaqa-rank-title">ترتيب الحلق لهذا الأسبوع</p>
+    <div id="halaqaRankList">
+      <p class="status-msg" style="color:#C9D8CF;">جارٍ التحميل…</p>
+    </div>
+  </section>
+
+  <section class="hero">
+    <p class="hero-label">متصدّر البرنامج حاليًا</p>
+    <div class="hero-body" id="heroBody">
+      <span class="hero-name">—</span>
+    </div>
+    <p class="hero-note" id="heroNote"></p>
+  </section>
+
+  <h2 class="section-title">أوائل كل حلقة</h2>
+  <div class="halaqat-grid" id="halaqatGrid"></div>
+
+  <h2 class="section-title">الترتيب العام على مستوى البرنامج</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="num">#</th>
+          <th>الاسم</th>
+          <th>الحلقة</th>
+          <th class="num">الدرجة</th>
+        </tr>
+      </thead>
+      <tbody id="overallBody">
+        <tr><td colspan="4" class="status-msg">جارٍ التحميل…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    البيانات مصدرها ملف الرصد الأسبوعي في Google Sheets، ويُشترط أن تبقى مشاركته مفعّلة (أي شخص لديه الرابط: عرض) حتى تظهر الأرقام.
+  </footer>
+</div>
+
+<script>
+const SHEET_ID = "1eEDmISkqGK_gWwizr-hc9IGZjse8lfYZ";
+const HALAQAT = [
+  "المسارات",
+  "أبو مسعود الأنصاري",
+  "السيوطي",
+  "أبو أيوب الأنصاري",
+  "قيس بن الربيع"
+];
+
+// the 16 weeks of the sheet, each with its degree / memorized / link&review columns
+const WEEKS = [
+  { name: "الأسبوع الأول",       degree: "K",  mem: "L",  rev: "M"  },
+  { name: "الأسبوع الثاني",      degree: "O",  mem: "P",  rev: "Q"  },
+  { name: "الأسبوع الثالث",      degree: "S",  mem: "T",  rev: "U"  },
+  { name: "الأسبوع الرابع",      degree: "Z",  mem: "AA", rev: "AB" },
+  { name: "الأسبوع الخامس",      degree: "AD", mem: "AE", rev: "AF" },
+  { name: "الأسبوع السادس",      degree: "AH", mem: "AI", rev: "AJ" },
+  { name: "الأسبوع السابع",      degree: "AL", mem: "AM", rev: "AN" },
+  { name: "الأسبوع الثامن",      degree: "AS", mem: "AT", rev: "AU" },
+  { name: "الأسبوع التاسع",      degree: "AW", mem: "AX", rev: "AY" },
+  { name: "الأسبوع العاشر",      degree: "BA", mem: "BB", rev: "BC" },
+  { name: "الأسبوع الحادي عشر",  degree: "BE", mem: "BF", rev: "BG" },
+  { name: "الأسبوع الثاني عشر",  degree: "BL", mem: "BM", rev: "BN" },
+  { name: "الأسبوع الثالث عشر",  degree: "BP", mem: "BQ", rev: "BR" },
+  { name: "الأسبوع الرابع عشر",  degree: "BT", mem: "BU", rev: "BV" },
+  { name: "الأسبوع الخامس عشر",  degree: "BX", mem: "BY", rev: "BZ" },
+  { name: "الأسبوع السادس عشر",  degree: "CB", mem: "CC", rev: "CD" }
+];
+
+// B, C (name, level) followed by all 16 weeks' degree/mem/rev columns, in order
+const SELECT_COLS = ["B", "C"].concat(WEEKS.flatMap(w => [w.degree, w.mem, w.rev]));
+
+let latestData = []; // cached per-halaqa parsed data, filled after each successful load
+let callbackCounter = 0;
+
+function fetchSheet(sheetName){
+  return new Promise((resolve, reject) => {
+    const cbName = "gvizCb_" + (callbackCounter++);
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error("timeout"));
+    }, 12000);
+
+    function cleanup(){
+      clearTimeout(timeout);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[cbName] = function(json){
+      cleanup();
+      resolve(json);
+    };
+
+    const query = encodeURIComponent("select " + SELECT_COLS.join(","));
+    const url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+      "/gviz/tq?sheet=" + encodeURIComponent(sheetName) +
+      "&tq=" + query +
+      "&tqx=out:json;responseHandler:" + cbName;
+
+    const script = document.createElement("script");
+    script.src = url;
+    script.onerror = () => { cleanup(); reject(new Error("load-error")); };
+    document.head.appendChild(script);
+  });
+}
+
+function cellVal(cell){
+  if (!cell) return null;
+  return typeof cell.v === "number" ? cell.v : null;
+}
+
+// after B(0), C(1), week i occupies indices [2+3i, 3+3i, 4+3i] = degree, mem, rev
+function buildRecord(name, halaqaName, c){
+  const level = c[1] ? (c[1].v || c[1].f || "") : "";
+  const weeks = WEEKS.map((w, i) => {
+    const base = 2 + 3 * i;
+    return {
+      degree: cellVal(c[base]) || 0,
+      mem: cellVal(c[base + 1]) || 0,
+      rev: cellVal(c[base + 2]) || 0
+    };
+  });
+  return { name: String(name).trim(), halaqa: halaqaName, level, weeks };
+}
+
+function parseSheet(json, halaqaName){
+  const result = { students: [], total: null };
+  if (!json || !json.table || !json.table.rows) return result;
+  const rows = json.table.rows;
+  // real student rows start after the 4 header rows
+  for (let i = 4; i < rows.length; i++){
+    const c = rows[i].c || [];
+    const nameCell = c[0];
+    const name = nameCell && (nameCell.v || nameCell.f);
+    if (!name) continue;
+    if (String(name).trim() === "المجموع"){
+      result.total = buildRecord(name, halaqaName, c);
+      continue;
+    }
+    result.students.push(buildRecord(name, halaqaName, c));
+  }
+  return result;
+}
+
+function fmtPct(n){
+  return (Math.round(n * 10) / 10).toLocaleString('en-US') + "%";
+}
+function fmtNum(n){
+  return (Math.round(n * 10) / 10).toLocaleString('en-US');
+}
+function ordinal(i){
+  return ["الأول","الثاني","الثالث","الرابع","الخامس"][i] || (i+1) + "";
+}
+
+function populateWeekSelect(){
+  const sel = document.getElementById("weekSelect");
+  sel.innerHTML = WEEKS.map((w, i) => `<option value="${i}">${w.name}</option>`).join("");
+}
+
+async function loadAll(){
+  const btn = document.getElementById("refreshBtn");
+  btn.disabled = true;
+  btn.textContent = "جارٍ التحديث…";
+  document.getElementById("lastUpdated").textContent = "جارٍ التحميل…";
+
+  const results = await Promise.allSettled(HALAQAT.map(fetchSheet));
+
+  latestData = [];
+  results.forEach((res, idx) => {
+    const halaqaName = HALAQAT[idx];
+    if (res.status !== "fulfilled"){
+      latestData.push({ halaqa: halaqaName, students: [], total: null, error: true });
+      return;
+    }
+    const parsed = parseSheet(res.value, halaqaName);
+    const students = parsed.students.map(s => Object.assign({}, s, { halaqa: halaqaName }));
+    latestData.push({ halaqa: halaqaName, students, total: parsed.total, error: false });
+  });
+
+  document.getElementById("lastUpdated").textContent =
+    "آخر تحديث: " + new Date().toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'});
+  btn.disabled = false;
+  btn.textContent = "تحديث البيانات";
+
+  renderWeeklyStats(document.getElementById("weekSelect").value);
+}
+
+// everything on the page is driven by a single selected week — recomputed instantly
+// from the cached latestData, no new network requests needed.
+function renderWeeklyStats(weekIndexRaw){
+  const weekIndex = Number(weekIndexRaw);
+
+  const statMemorized = document.getElementById("statMemorized");
+  const statRead = document.getElementById("statRead");
+  const statDegree = document.getElementById("statDegree");
+  const rankList = document.getElementById("halaqaRankList");
+  const grid = document.getElementById("halaqatGrid");
+  const overallBody = document.getElementById("overallBody");
+  const heroBody = document.getElementById("heroBody");
+  const heroNote = document.getElementById("heroNote");
+
+  if (!latestData.length){
+    statMemorized.textContent = statRead.textContent = statDegree.textContent = "—";
+    rankList.innerHTML = '<p class="status-msg" style="color:#C9D8CF;">لا توجد بيانات</p>';
+    return;
+  }
+
+  let totalMem = 0, totalRev = 0, totalDeg = 0, totalStudents = 0;
+  const halaqaPcts = [];
+  let allStudents = [];
+
+  grid.innerHTML = "";
+
+  latestData.forEach(h => {
+    const panel = document.createElement("div");
+    panel.className = "halaqa-panel";
+
+    if (h.error){
+      panel.innerHTML = `<h3>${h.halaqa}</h3>
+        <p class="status-msg error">تعذّر تحميل بيانات هذه الحلقة</p>`;
+      grid.appendChild(panel);
+      return;
+    }
+
+    const studentCount = h.students.length;
+
+    // computed directly from each student's own weekly figures (not the sheet's
+    // "المجموع" row, whose totals can come out wrong after a Numbers export)
+    const mem = h.students.reduce((s,x)=> s + x.weeks[weekIndex].mem, 0);
+    const rev = h.students.reduce((s,x)=> s + x.weeks[weekIndex].rev, 0);
+    const deg = h.students.reduce((s,x)=> s + x.weeks[weekIndex].degree, 0);
+    totalMem += mem;
+    totalRev += rev;
+    totalDeg += deg;
+    totalStudents += studentCount;
+
+    const halaqaPct = studentCount ? (deg / (75 * studentCount)) * 100 : 0;
+    halaqaPcts.push({ halaqa: h.halaqa, pct: halaqaPct });
+
+    // per-student weekly percentage, for this halaqa's top 3 and the overall table
+    const studentsWithPct = h.students.map(s => ({
+      name: s.name,
+      halaqa: s.halaqa,
+      pct: (s.weeks[weekIndex].degree / 75) * 100
+    }));
+    allStudents = allStudents.concat(studentsWithPct);
+
+    const avg = studentCount ? studentsWithPct.reduce((s,x)=>s+x.pct,0) / studentCount : 0;
+    const top3 = [...studentsWithPct].sort((a,b)=> b.pct - a.pct).slice(0,3);
+
+    let rowsHtml;
+    if (studentCount === 0){
+      rowsHtml = `<p class="empty-note">لا يوجد طلاب مسجّلون بعد</p>`;
+    } else {
+      rowsHtml = top3.map((s,i) => `
+        <div class="top-row">
+          <span class="top-rank">${ordinal(i)}</span>
+          <span class="top-name">${s.name}</span>
+          <span class="top-pct">${fmtPct(s.pct)}</span>
+        </div>
+      `).join("");
+    }
+
+    panel.innerHTML = `
+      <h3>${h.halaqa}</h3>
+      <div class="halaqa-stats">
+        <span>عدد الطلاب: <b>${studentCount}</b></span>
+        <span>متوسط النسبة: <b>${fmtPct(avg)}</b></span>
+      </div>
+      ${rowsHtml}
+    `;
+    grid.appendChild(panel);
+  });
+
+  // top stat boxes
+  const overallPct = totalStudents ? (totalDeg / (75 * totalStudents)) * 100 : 0;
+  statMemorized.textContent = fmtNum(totalMem);
+  statRead.textContent = fmtNum(totalRev);
+  statDegree.textContent = fmtPct(overallPct);
+
+  // halaqa ranking
+  halaqaPcts.sort((a,b) => b.pct - a.pct);
+  rankList.innerHTML = halaqaPcts.map((h, i) => `
+    <div class="halaqa-rank-row">
+      <span class="r-rank">${ordinal(i)}</span>
+      <span class="r-name">${h.halaqa}</span>
+      <span class="r-val">${fmtPct(h.pct)}</span>
+    </div>
+  `).join("");
+
+  // overall ranking table
+  allStudents.sort((a,b) => b.pct - a.pct);
+  if (allStudents.length === 0){
+    overallBody.innerHTML = '<tr><td colspan="4" class="status-msg error">تعذّر جلب أي بيانات — تأكد أن الشيت مُشارك للعرض العام</td></tr>';
+  } else {
+    overallBody.innerHTML = allStudents.slice(0, 20).map((s, i) => `
+      <tr>
+        <td class="rank">${i+1}</td>
+        <td>${s.name}</td>
+        <td>${s.halaqa}</td>
+        <td class="num pct">${fmtPct(s.pct)}</td>
+      </tr>
+    `).join("");
+  }
+
+  // hero
+  if (allStudents.length && allStudents[0].pct > 0){
+    const leader = allStudents[0];
+    heroBody.innerHTML = `
+      <span class="hero-name">${leader.name}</span>
+      <span class="hero-halaqa">${leader.halaqa}</span>
+      <span class="hero-pct">${fmtPct(leader.pct)}</span>
+    `;
+    heroNote.textContent = "بحسب درجة " + WEEKS[weekIndex].name + ".";
+  } else if (allStudents.length){
+    heroBody.innerHTML = `<span class="hero-name">لا يوجد رصد بعد لهذا الأسبوع</span>`;
+    heroNote.textContent = "ستظهر الصدارة تلقائيًا فور تسجيل درجات هذا الأسبوع.";
+  } else {
+    heroBody.innerHTML = `<span class="hero-name">تعذّر الاتصال بالبيانات</span>`;
+    heroNote.textContent = "تحقق من أن الشيت مشارك كـ«أي شخص لديه الرابط: عرض».";
+  }
+}
+
+populateWeekSelect();
+loadAll();
+</script>
+</body>
+</html>
